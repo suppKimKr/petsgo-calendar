@@ -1,0 +1,529 @@
+<!-- views/schedule-situation.ejs -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>펫츠고 예약현황</title>
+    <meta name="description" content="펫츠고와 함께 사랑하는 반려동물과의 여행을 시작 해 보세요">
+    <link rel="icon" type="image/png" href="https://cdn.imweb.me/thumbnail/20240429/9d1e4346c6e55.png" sizes="196x196">
+    <style>
+        body {
+            margin: 40px 10px;
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #fff;
+            overflow: auto;
+        }
+
+        .banner {
+            position: relative;
+            height: 144px;
+            overflow: hidden;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+        }
+
+        .banner-text {
+            position: absolute;
+            z-index: 10;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+        }
+
+        .banner-text .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .banner-text .subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .calendar-header {
+            background-color: #f2f2f2;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #555;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.25rem;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* 기존 스타일 유지 */
+
+        .week-bar-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            height: 3.5rem; /* h-14 */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .week-bar {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        .week-bar-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 0.25rem;
+        }
+
+        .week-bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .week-bar-item.selected {
+            background-color: #f43f5e; /* rose-500 */
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .week-bar-item .day-label {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .week-bar-item .date-number {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .week-arrow {
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #666;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .week-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 0.375rem;
+        }
+
+        .schedule-list {
+            padding: 0 1rem;
+        }
+
+        .schedule-card {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e5e5;
+            gap: 1rem;
+        }
+
+        .schedule-card:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-left {
+            flex: 0 0 6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: flex-start;
+        }
+
+        .schedule-middle {
+            flex: 1;
+            display: flex;
+            height: 100%;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+            word-break: keep-all;
+        }
+
+        .schedule-right {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .h-3 {
+            height: 0.75rem;
+        }
+
+        .w-3 {
+            width: 0.75rem;
+        }
+
+        .rounded-full {
+            border-radius: 9999px;
+        }
+
+        .dot.confirmed {
+            background-color: hsl(220, 100%, 50%); /* 파란색 */
+        }
+
+        .dot.potential {
+            background-color: hsl(134, 65%, 58%); /* 초록색 */
+        }
+
+        .dot.open {
+            background-color: hsl(0, 0%, 60%); /* 회색 */
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-gray-500 {
+            color: #6b7280;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-none {
+            flex: none;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .items-start {
+            align-items: flex-start;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .gap-1 {
+            gap: 0.25rem;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .w-24 {
+            width: 6rem;
+        }
+
+        .h-4 {
+            height: 1rem;
+        }
+
+        .w-4 {
+            width: 1rem;
+        }
+
+        .flex-full {
+            flex: 1;
+        }
+
+        .leading-snug {
+            line-height: 1.375;
+        }
+
+        .break-words {
+            word-break: break-word;
+        }
+
+        .border-b {
+            border-bottom-width: 1px;
+        }
+
+        .border-gray-200 {
+            border-color: #e5e7eb;
+        }
+
+        .py-5 {
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+
+        .text-base {
+            font-size: 1rem;
+        }
+
+        /* 기존 스타일 유지 */
+
+        .week-bar {
+            position: relative;
+            height: 3.5rem; /* h-14 */
+            overflow: hidden;
+        }
+
+        .week-bar-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 0.25rem; /* gap-1 */
+        }
+
+        .week-bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: all 0.2s ease;
+            height: 100%;
+        }
+
+        .week-bar-item.selected {
+            background-color: #f43f5e; /* rose-500 */
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .week-bar-item .day-label {
+            font-size: 0.75rem; /* text-xs */
+            line-height: 1rem;
+        }
+
+        .week-bar-item .date-number {
+            font-size: 0.875rem; /* text-sm */
+            line-height: 1.25rem;
+        }
+
+        /* 선택되지 않은 경우 */
+        .week-bar-item:not(.selected) {
+            color: #999; /* text-gray040 */
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            font: inherit;
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+    </style>
+    <script>
+        document.querySelectorAll('[data-direction]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const direction = btn.dataset.direction;
+                const base = moment(document.body.dataset.selectedDate);
+                const newDate = direction === 'prev' ? base.subtract(1, 'week') : base.add(1, 'week');
+                location.href = `/v1/service/calendar/${newDate.format('YYYY-MM-DD')}/list`;
+            });
+        });
+    </script>
+</head>
+<body style="margin:40px 10px;">
+<main class="page">
+    <section class="banner">
+        <img src="/public/petsgo.png" alt="Slide 2">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+            <div class="title">펫츠고</div>
+            <div class="subtitle">사랑하는 반려동물과의 여행을 시작 해 보세요</div>
+        </div>
+    </section>
+
+    <div class="legend">
+        <div><span class="dot confirmed"></span>출발 확정</div>
+        <div><span class="dot potential"></span>출발 유력</div>
+        <div><span class="dot open"></span>모객 중</div>
+    </div>
+
+    <div class="calendar-header flex items-center justify-between">
+        <!-- 왼쪽 화살표 -->
+        <button onclick="location.href='/v1/service/calendar/<%=prevMonth %>/list'" class="week-arrow left inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-6 w-6">
+                <path d="m15 18-6-6 6-6"></path>
+            </svg>
+        </button>
+        <h2><%= monthLabel %></h2>
+        <!-- 오른쪽 화살표 -->
+        <button onclick="location.href='/v1/service/calendar/<%=nextMonth %>/list'" class="week-arrow right inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="next">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-6 w-6">
+                <path d="m9 18 6-6-6-6"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mb-3 flex items-center justify-between gap-5 px-4">
+        <button onclick="location.href='/v1/service/calendar'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left h-4 w-4">
+                <path d="m12 19-7-7 7-7"></path>
+                <path d="M19 12H5"></path>
+            </svg>
+            <h3 class="text-lg font-semibold">달력 보기</h3>
+        </button>
+
+        <button onclick="location.href='/v1/service/calendar/<%=nextDay %>/list'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground">
+            <h3 class="text-sm font-semibold">내일 일정</h3>
+        </button>
+    </div>
+
+    <div class="schedule-list">
+        <div class="week-bar-wrapper">
+            <!-- 왼쪽 화살표 -->
+            <button onclick="location.href='/v1/service/calendar/<%=prevWeek %>/list'" class="week-arrow left inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-6 w-6">
+                    <path d="m15 18-6-6 6-6"></path>
+                </svg>
+            </button>
+            <div class="week-bar">
+                <div class="week-bar-grid">
+                    <% weekDates.forEach(({ fullDate, dayLabel, dateStr, isSelected }) => { %>
+                        <a href="/v1/service/calendar/<%= fullDate%>/list">
+                            <div class="week-bar-item <%= isSelected ? 'selected' : '' %>">
+                                <div class="day-label"><%= dayLabel %></div>
+                                <div class="date-number"><%= dateStr %></div>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+            <!-- 오른쪽 화살표 -->
+            <button onclick="location.href='/v1/service/calendar/<%=nextWeek %>/list'" class="week-arrow right inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-6 w-6">
+                    <path d="m9 18 6-6-6-6"></path>
+                </svg>
+            </button>
+        </div>
+        <% if (schedules.length) { %>
+            <% schedules.forEach(item => { %>
+                <a href="<%= item.url %>" class="schedule-card" target="_blank">
+                    <!-- 왼쪽 -->
+                    <div class="schedule-left">
+                        <div class="flex items-center gap-2">
+                            <div class="h-3 w-3 rounded-full dot <%= item.bookRate >= 0.7 ? 'confirmed' : item.bookRate >= 0.5 ? 'potential' : 'open' %>"></div>
+                            <div class="text-lg font-bold"><%= item.region %></div>
+                        </div>
+                        <div class="flex items-center gap-1 mt-1 text-sm text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="gray" stroke="gray" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span><%= item.current %>/<%= item.max %></span>
+                        </div>
+                    </div>
+
+                    <!-- 가운데 -->
+                    <div class="schedule-middle">
+                        <div class="flex flex-col justify-center gap-1">
+                            <div class="text-base font-semibold leading-snug break-words">
+                                <%= item.title %>
+                            </div>
+                            <div class="text-sm text-gray-500 leading-normal">
+                                출발지: <%= item.departure %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 오른쪽 -->
+                    <div class="schedule-right">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </a>
+            <% }) %>
+        <% } else { %>
+            <div class="schedule-card" style="display: flex; justify-content: center; align-items: center;">
+                    등록된 일정이 없습니다.
+            </div>
+        <% } %>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: 'Pretendard', sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.page {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #fff;
+    padding-bottom: 82px;
+    overflow: auto;
+}
+
+.banner {
+    position: relative;
+    height: 144px;
+    overflow: hidden;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.banner-text {
+    position: absolute;
+    z-index: 10;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+}
+
+.banner-text .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.banner-text .subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.calendar-header {
+    background-color: #f2f2f2;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    color: #555;
+}
+
+.legend .dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.dot.confirmed { background-color: hsl(134, 65%, 58%); }
+.dot.potential { background-color: hsl(47, 100%, 59%); }
+.dot.open     { background-color: hsl(0, 0%, 70%); }
+
+.schedule-list {
+    padding: 0 1rem;
+}
+
+.schedule-card {
+    display: block;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.region {
+    font-size: 1.125rem;
+    font-weight: bold;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 500;
+}
