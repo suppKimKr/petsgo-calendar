@@ -18,18 +18,44 @@
                 location.href = `/v1/service/calendar/${newDate.format('YYYY-MM-DD')}/list`;
             });
         });
+        document.addEventListener('DOMContentLoaded', () => {
+            let i = 0;
+
+            function changeImage() {
+                const bannerArr = document.querySelectorAll('.banner-image');
+                const loaded = document.querySelector('.banner-image.loaded');
+                const notLoadedArr = Array.from(bannerArr).filter(banner => !banner.classList.contains('loaded'));
+
+                const max = bannerArr.length;
+
+                const notLoadedOne = notLoadedArr[i] || notLoadedArr[0];
+                i = (i + 1) % max;
+
+                loaded.classList.remove('loaded');
+                notLoadedOne.classList.add('loaded');
+            }
+
+            // 최초 이미지 로드
+            changeImage();
+
+            // 1초마다 이미지 변경
+            setInterval(changeImage, 4000);
+        });
     </script>
 </head>
 <body style="margin:40px 10px;">
 <main class="page">
-    <section class="banner">
-        <img src="/public/img/petsgo.png" alt="Slide 1">
-        <div class="banner-overlay"></div>
-        <div class="banner-text">
-            <div class="title">펫츠고</div>
-            <div class="subtitle">사랑하는 반려동물과의 여행을 시작 해 보세요</div>
-        </div>
-    </section>
+    <a href="https://petsgo.kr" target="_blank">
+        <section class="banner">
+            <img src="/public/img/petsgo.png" alt="banner" class="banner-image loaded">
+            <img src="/public/img/petsgo2.png" alt="banner" class="banner-image">
+            <div class="banner-overlay"></div>
+            <div class="banner-text">
+                <div class="title">펫츠고</div>
+                <div class="subtitle">사랑하는 반려동물과의 여행을 시작 해 보세요</div>
+            </div>
+        </section>
+    </a>
 
     <div class="legend">
         <div><span class="dot confirmed"></span>출발 확정</div>

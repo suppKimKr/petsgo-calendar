@@ -19,7 +19,14 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: all 1s ease-in-out;
+    position: absolute;
+}
+.banner-image {
+    transition: all 3s ease-in-out;
+    opacity: 0; /* 초기 투명도 */
+}
+.banner-image.loaded {
+    opacity: 1;
 }
 .banner-overlay {
     position: absolute;
