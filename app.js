@@ -10,9 +10,9 @@ const Format = require("response-format");
     await environment(server);
     route(server);
 
-    server.use('/public', express.static('server/views/img'));
+    server.use('/public', express.static('server/views'));
 
-    server.use(function (req, res, next) {
+    server.use(function (req, res) {
         res.render('error.ejs', { status: Format.notFound().statusCode });
     });
 

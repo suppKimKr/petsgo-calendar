@@ -1,0 +1,98 @@
+body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 14px;
+}
+#wrap {
+    max-width: 720px;
+    margin: 0 auto;
+}
+#calendar {
+    max-width: 720px;
+    margin: 0 auto;
+    padding-top: 1rem;
+}
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 1rem;
+    font-size: 0.875rem;
+    color: #555;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+}
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+.dot.confirmed {
+    background-color: hsl(220, 100%, 50%); /* 파란색 */
+}
+.dot.potential {
+    background-color: hsl(134, 65%, 58%); /* 초록색 */
+}
+.dot.open {
+    background-color: hsl(0, 0%, 60%); /* 회색 */
+}
+.fc-col-header-cell-cushion {
+    text-decoration: none !important;
+    color: #1a1a1a; /* 링크색도 원하면 수정 */
+}
+.fc-daygrid-event-dot {
+    display: none !important;
+}
+.fc-daygrid-day-number {
+    text-decoration: none !important;
+    color: #1a1a1a; /* 링크색도 원하면 수정 */
+}
+.fc-daygrid-day-frame.fc-scrollgrid-sync-inner:hover {
+    cursor: pointer;
+    background-color: #f5f5f5 !important;
+}
+.banner {
+    position: relative;
+    height: 144px;
+    overflow: hidden;
+}
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+}
+.banner-image {
+    transition: all 3s ease-in-out;
+    opacity: 0; /* 초기 투명도 */
+}
+.banner-image.loaded {
+    opacity: 1;
+}
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+}
+.banner-text {
+    position: absolute;
+    z-index: 10;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+}
+.banner-text .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.banner-text .subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+}

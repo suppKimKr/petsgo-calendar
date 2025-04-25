@@ -47,9 +47,9 @@
 <body>
 <div class="code"><%= status %></div>
 <div class="message">
-    <% if (status == 404) { %>
+    <% if (404 === status) { %>
         요청하신 페이지를 찾을 수 없습니다.
-    <% } else if (status == 500) { %>
+    <% } else if (500 === status) { %>
         서버에 문제가 발생했습니다.
     <% } else { %>
         오류가 발생했습니다.
