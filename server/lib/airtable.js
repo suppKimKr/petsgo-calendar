@@ -1,5 +1,3 @@
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
 const Airtable = require('airtable');
 const _ = require("lodash");
 
