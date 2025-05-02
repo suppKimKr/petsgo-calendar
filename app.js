@@ -16,8 +16,8 @@ const Format = require("response-format");
         res.render('error.ejs', { status: Format.notFound().statusCode });
     });
 
-    server.listen(config.app.port, function () {
-        console.log('[%s][%s] (http) listening on port [%s]', global.config.app.env, global.config.app.name, this.address().port);
+    server.listen(process.env.APP_PORT, function () {
+        console.log('[%s][%s] (http) listening on port [%s]', process.env.NODE_ENV, process.env.APP_NAME, this.address().port);
         console.log('---------------------------------------------------------------');
     });
 })();

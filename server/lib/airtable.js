@@ -5,11 +5,11 @@ module.exports = {
     client: (function () {
         function client() {
             Airtable.configure({
-                endpointUrl: config.airtable.baseURL,
-                apiKey: config.airtable.accessKey,
+                endpointUrl: process.env.AIRTABLE_ENDPOINT,
+                apiKey: process.env.AIRTABLE_ACCESSKEY,
             });
 
-            this.base = Airtable.base(config.airtable.workspace);
+            this.base = Airtable.base(process.env.AIRTABLE_WORKSPACE);
         }
         client.prototype.getProductListsAfterStartDate = async function (date) {
             const filter = date ? `AND({Start Date} >= '${date}')` : '';

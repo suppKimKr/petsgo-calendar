@@ -4,7 +4,15 @@ const compression = require('compression');
 const requestIp = require('request-ip');
 
 process.env.NODE_ENV = !!process.env.NODE_ENV ? process.env.NODE_ENV : 'myLocalhost';
-global.config = require('config');
+if('production' !== process.env.NODE_ENV) {
+    global.config = require('config');
+
+    process.env.AIRTABLE_ENDPOINT = config.airtable.baseURL;
+    process.env.AIRTABLE_ACCESSKEY = config.airtable.accessKey;
+    process.env.AIRTABLE_WORKSPACE = config.airtable.workspace;
+    process.env.APP_NAME = config.app.name;
+    process.env.APP_PORT = config.app.port;
+}
 
 module.exports = async (app) => {
     app.use(bodyParser.json({ limit: '50mb' }));
