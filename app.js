@@ -4,20 +4,20 @@ const environment = require('./config/environment');
 const route = require('./config/routes');
 const Format = require("response-format");
 
-(async () => {
-    const server = express();
+const server = express();
 
-    await environment(server);
-    route(server);
+environment(server);
+route(server);
 
-    server.use('/public', express.static('server/views'));
+server.use('/public', express.static('server/views'));
 
-    server.use(function (req, res) {
-        res.render('error.ejs', { status: Format.notFound().statusCode });
-    });
+server.use(function (req, res) {
+    res.render('error.ejs', { status: Format.notFound().statusCode });
+});
 
-    server.listen(process.env.APP_PORT, function () {
-        console.log('[%s][%s] (http) listening on port [%s]', process.env.NODE_ENV, process.env.APP_NAME, this.address().port);
-        console.log('---------------------------------------------------------------');
-    });
-})();
+server.listen(process.env.APP_PORT, function () {
+    console.log('[%s][%s] (http) listening on port [%s]', process.env.NODE_ENV, process.env.APP_NAME, this.address().port);
+    console.log('---------------------------------------------------------------');
+});
+
+module.exports = server;

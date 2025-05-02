@@ -14,7 +14,7 @@ if('production' !== process.env.NODE_ENV) {
     process.env.APP_PORT = config.app.port;
 }
 
-module.exports = async (app) => {
+module.exports = (app) => {
     app.use(bodyParser.json({ limit: '50mb' }));
 
     app.use(
