@@ -1,12 +1,12 @@
-const apiVersion = `/v1/service`;
+const apiVersion = `/v1`;
 
 const controllers = require('../server/controllers');
 
 module.exports = (app) => {
     console.log('Initializing routes.');
 
-    console.log(`${apiVersion}/calendar`);
-    app.use(`${apiVersion}/calendar`, controllers.calendar);
+    console.log(`${apiVersion}/service`);
+    app.use(`${apiVersion}/service`, controllers.calendar);
 
     console.log('\r');
 };

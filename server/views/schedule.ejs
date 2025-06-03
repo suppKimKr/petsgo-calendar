@@ -15,7 +15,7 @@
                 const direction = btn.dataset.direction;
                 const base = moment(document.body.dataset.selectedDate);
                 const newDate = direction === 'prev' ? base.subtract(1, 'week') : base.add(1, 'week');
-                location.href = `/v1/service/calendar/${newDate.format('YYYY-MM-DD')}/list`;
+                location.href = `/v1/service/${newDate.format('YYYY-MM-DD')}/list`;
             });
         });
         document.addEventListener('DOMContentLoaded', () => {
@@ -65,14 +65,14 @@
 
     <div class="calendar-header flex items-center justify-between">
         <!-- 왼쪽 화살표 -->
-        <button onclick="location.href='/v1/service/calendar/<%=prevMonth %>/list'" class="week-arrow left inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="prev">
+        <button onclick="location.href='/v1/service/<%=prevMonth %>/list'" class="week-arrow left inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="prev">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-6 w-6">
                 <path d="m15 18-6-6 6-6"></path>
             </svg>
         </button>
         <h2><%= monthLabel %></h2>
         <!-- 오른쪽 화살표 -->
-        <button onclick="location.href='/v1/service/calendar/<%=nextMonth %>/list'" class="week-arrow right inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="next">
+        <button onclick="location.href='/v1/service/<%=nextMonth %>/list'" class="week-arrow right inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="next">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-6 w-6">
                 <path d="m9 18 6-6-6-6"></path>
             </svg>
@@ -81,7 +81,7 @@
 
     <!-- Action Buttons -->
     <div class="mt-4 flex items-center justify-between gap-5 px-4">
-        <button onclick="location.href='/v1/service/calendar'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground">
+        <button onclick="location.href='/v1/service'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left h-4 w-4">
                 <path d="m12 19-7-7 7-7"></path>
                 <path d="M19 12H5"></path>
@@ -89,7 +89,7 @@
             <h3 class="text-lg font-semibold">달력 보기</h3>
         </button>
 
-        <button onclick="location.href='/v1/service/calendar/<%=nextDay %>/list'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground">
+        <button onclick="location.href='/v1/service/<%=nextDay %>/list'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground">
             <h3 class="text-lg font-semibold">내일 일정</h3>
         </button>
     </div>
@@ -97,7 +97,7 @@
     <div class="schedule-list">
         <div class="week-bar-wrapper">
             <!-- 왼쪽 화살표 -->
-            <button onclick="location.href='/v1/service/calendar/<%=prevWeek %>/list'" class="week-arrow left inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="prev">
+            <button onclick="location.href='/v1/service/<%=prevWeek %>/list'" class="week-arrow left inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="prev">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-6 w-6">
                     <path d="m15 18-6-6 6-6"></path>
                 </svg>
@@ -105,7 +105,7 @@
             <div class="week-bar">
                 <div class="week-bar-grid">
                     <% weekDates.forEach(({ fullDate, dayLabel, dateStr, isSelected }) => { %>
-                        <a href="/v1/service/calendar/<%= fullDate%>/list">
+                        <a href="/v1/service/<%= fullDate%>/list">
                             <div class="week-bar-item <%= isSelected ? 'selected' : '' %>">
                                 <div class="day-label"><%= dayLabel %></div>
                                 <div class="date-number"><%= dateStr %></div>
@@ -115,7 +115,7 @@
                 </div>
             </div>
             <!-- 오른쪽 화살표 -->
-            <button onclick="location.href='/v1/service/calendar/<%=nextWeek %>/list'" class="week-arrow right inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="next">
+            <button onclick="location.href='/v1/service/<%=nextWeek %>/list'" class="week-arrow right inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 min-h-10 min-w-10 hover:bg-accent hover:text-accent-foreground" data-direction="next">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-6 w-6">
                     <path d="m9 18 6-6-6-6"></path>
                 </svg>

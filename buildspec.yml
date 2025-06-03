@@ -4,11 +4,10 @@ phases:
         commands:
             - echo Installing jq
             - yum install jq
-            - wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
     pre_build:
         commands:
             - echo Copy secret to config
-            - aws secretsmanager get-secret-value --secret-id $ENV/petsgo/petsgo-calendar | jq '.SecretString | fromjson' > ./config/$ENV.json
+            - aws secretsmanager get-secret-value --secret-id $ENV/petsgo/calendar | jq '.SecretString | fromjson' > ./config/$ENV.json
             - echo Installing source NPM dependencies...
             - npm install
 artifacts:
